@@ -384,6 +384,42 @@
 </head>
 <body>
 
+<!-- PASSWORD LOCK SCREEN -->
+<div id="lockScreen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0B0E11;display:flex;align-items:center;justify-content:center;z-index:99999;">
+  <div style="text-align:center;background:#161A1E;border:1px solid #2B2F36;border-radius:16px;padding:48px 40px;max-width:400px;width:90%;">
+    <div style="font-size:32px;font-weight:700;margin-bottom:8px;color:#EAECEF;"><span style="color:#0ECB81;">OKX</span> Listing</div>
+    <div style="font-size:14px;color:#848E9C;margin-bottom:32px;">Enter password to access dashboard</div>
+    <input id="pwdInput" type="password" placeholder="Password"
+      style="width:100%;padding:12px 16px;background:#0B0E11;border:1px solid #2B2F36;border-radius:8px;color:#EAECEF;font-size:15px;outline:none;margin-bottom:16px;"
+      onkeydown="if(event.key==='Enter')checkPwd()"
+      onfocus="this.style.borderColor='#0ECB81'" onblur="this.style.borderColor='#2B2F36'">
+    <div id="pwdError" style="color:#F6465D;font-size:13px;margin-bottom:12px;display:none;">Incorrect password</div>
+    <button onclick="checkPwd()"
+      style="width:100%;padding:12px;background:#0ECB81;color:#0B0E11;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;"
+      onmouseover="this.style.background='#0FB872'" onmouseout="this.style.background='#0ECB81'">Unlock</button>
+  </div>
+</div>
+<script>
+function checkPwd(){
+  var p=document.getElementById('pwdInput').value;
+  if(p==='okxlisting'){
+    document.getElementById('lockScreen').style.display='none';
+    document.getElementById('mainContent').style.display='';
+    sessionStorage.setItem('dashUnlocked','1');
+  } else {
+    document.getElementById('pwdError').style.display='block';
+    document.getElementById('pwdInput').value='';
+  }
+}
+if(sessionStorage.getItem('dashUnlocked')==='1'){
+  document.addEventListener('DOMContentLoaded',function(){
+    document.getElementById('lockScreen').style.display='none';
+    document.getElementById('mainContent').style.display='';
+  });
+}
+</script>
+
+<div id="mainContent" style="display:none;">
 <!-- HEADER -->
 <div class="header">
   <div class="header-left">
@@ -3516,5 +3552,6 @@ function scheduleHKT9am() {
 
 document.addEventListener('DOMContentLoaded',()=>{loadCmcKey();updateExchangeStatusBar();refreshAll();startAutoRefresh();scheduleHKT9am();});
 </script>
+</div><!-- end mainContent -->
 </body>
 </html>
